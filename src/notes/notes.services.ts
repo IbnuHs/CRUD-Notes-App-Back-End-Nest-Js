@@ -5,21 +5,43 @@ import { Repository } from 'typeorm';
 import { CreateNotesDTO } from './dto/add.notes';
 import { UpdateNotesDto } from './dto/update.notes.Dto';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
+import { User } from 'src/entities/user.entities';
 
 @Injectable()
 export class NotesServices {
   constructor(
     @InjectRepository(Notes)
     private readonly notesRepo: Repository<Notes>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   // Controller
-  async getAllNotes(): Promise<Notes[]> {
-    return await this.notesRepo.find();
+  async getAllNotes(user_id): Promise<Notes[] | User[]> {
+    const user = await this.userRepository.find({
+      where: {
+        id: user_id,
+      },
+    });
+
+    const notes = await this.notesRepo.find({
+      where: {
+        user: { id: user_id },
+      },
+    });
+    // return await this.notesRepo.find();
+
+    return notes;
   }
 
-  async AddNotes(data: CreateNotesDTO): Promise<Notes> {
-    const notes = this.notesRepo.create(data);
+  async AddNotes(user_id: string, data: CreateNotesDTO): Promise<Notes> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+    const notes = this.notesRepo.create({ ...data, user: user });
     return this.notesRepo.save(notes);
   }
 

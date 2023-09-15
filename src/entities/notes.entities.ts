@@ -3,13 +3,18 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  DeleteDateColumn,
+  ManyToOne,
+  CreateDateColumn,
 } from 'typeorm';
+import { User } from './user.entities';
 
-@Entity()
+@Entity('Notes')
 export class Notes extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @ManyToOne(() => User, (user) => user.id)
+  user: User;
 
   @Column()
   title: string;
@@ -17,6 +22,6 @@ export class Notes extends BaseEntity {
   @Column()
   notes: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 }

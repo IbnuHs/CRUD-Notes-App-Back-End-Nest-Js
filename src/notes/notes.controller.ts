@@ -15,9 +15,9 @@ import { UpdateNotesDto } from './dto/update.notes.Dto';
 @Controller('notes')
 export class NotesController {
   constructor(private readonly notesServices: NotesServices) {}
-  @Get()
-  async getAllNotes() {
-    return this.notesServices.getAllNotes();
+  @Get('mynotes/:id')
+  async getAllNotes(@Param('user_id') user_id: string) {
+    return this.notesServices.getAllNotes(user_id);
   }
 
   @Get('getNote/:id')
@@ -25,9 +25,12 @@ export class NotesController {
     return this.notesServices.getNoteByid(id);
   }
 
-  @Post()
-  async AddNotes(@Body() createNotesDto: CreateNotesDTO): Promise<Notes> {
-    return this.notesServices.AddNotes(createNotesDto);
+  @Post(':user_id')
+  async AddNotes(
+    @Param('user_id') user_id: string,
+    @Body() createNotesDto: CreateNotesDTO,
+  ): Promise<Notes> {
+    return this.notesServices.AddNotes(user_id, createNotesDto);
   }
 
   @Put('update/:id')
