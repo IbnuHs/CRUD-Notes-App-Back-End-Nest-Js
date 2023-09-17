@@ -6,17 +6,23 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
+  Headers,
 } from '@nestjs/common';
 import { NotesServices } from './notes.services';
 import { CreateNotesDTO } from './dto/add.notes';
 import { Notes } from 'src/entities/notes.entities';
 import { UpdateNotesDto } from './dto/update.notes.Dto';
+import { JwtStrategy } from 'src/auth/strategy/verifyToken';
 
 @Controller('notes')
 export class NotesController {
   constructor(private readonly notesServices: NotesServices) {}
-  @Get('mynotes/:id')
+
+  @UseGuards(JwtStrategy)
+  @Get('mynotes/:user_id')
   async getAllNotes(@Param('user_id') user_id: string) {
+    JwtStrategy;
     return this.notesServices.getAllNotes(user_id);
   }
 
@@ -45,5 +51,12 @@ export class NotesController {
   @Delete('delete/:id')
   async deleteNotes(@Param('id') id: string) {
     return this.notesServices.deleteNotes(id);
+  }
+
+  @Get('header')
+  getAllHeaders(@Headers() headers: Record<string, any>) {
+    console.log('All Headers:', headers);
+    // Lakukan sesuatu dengan semua header
+    return `All Headers: ${JSON.stringify(headers)}`;
   }
 }

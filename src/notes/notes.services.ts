@@ -18,7 +18,7 @@ export class NotesServices {
   ) {}
 
   // Controller
-  async getAllNotes(user_id): Promise<Notes[] | User[]> {
+  async getAllNotes(user_id: string): Promise<string | object> {
     const user = await this.userRepository.find({
       where: {
         id: user_id,

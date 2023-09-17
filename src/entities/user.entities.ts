@@ -16,4 +16,7 @@ export class User extends BaseEntity {
 
   @Column()
   salt: string;
+
+  @Column() // Tambahkan kolom token
+  refresh_token: string;
 }
