@@ -10,7 +10,6 @@ import { Repository, ObjectLiteral } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { error } from 'console';
 
 @Injectable()
 export class AuthService {

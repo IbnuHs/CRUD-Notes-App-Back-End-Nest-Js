@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/database.config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { WhatsappOtpModule } from './whatsapp-otp/whatsapp-otp.module';
 // import 'dotenv/config';
 
 @Module({
@@ -14,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRoot(typeOrmConfig),
     UserModule,
     AuthModule,
+    WhatsappOtpModule,
   ],
   controllers: [AppController],
   providers: [AppService],
